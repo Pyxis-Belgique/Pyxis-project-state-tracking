@@ -1,10 +1,10 @@
-import {getInput} from "@actions/core";
+import {getInputOrThrow} from "./helpers/getInputOrThrow";
 
-async function Run() {
-    const patToken = getInput("organization-token");
-    const apiBaseUrl = getInput("api-url");
-
-    console.log(`hello world avec comme arg cette api url -> ${apiBaseUrl}`);
+export async function Run() {
+    const githubPatToken = getInputOrThrow("organization-token");
+    const apiToken = getInputOrThrow("api-token");
+    const apiBaseUrl = getInputOrThrow("api-url");
 }
 
-(async () => await Run())();
+if (!process.env.JEST_WORKER_ID)
+    (async () => await Run())();

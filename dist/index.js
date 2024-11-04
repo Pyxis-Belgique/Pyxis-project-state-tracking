@@ -1,6 +1,27 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 8788:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getInputOrThrow = void 0;
+const core_1 = __nccwpck_require__(7484);
+const getInputOrThrow = (name) => {
+    if (name === undefined || name === null || name === "")
+        throw new Error(`Argument cannot be empty`);
+    const value = (0, core_1.getInput)(name);
+    if (value === undefined || value === null || value === "")
+        throw new Error(`Input required: ${name}`);
+    return value;
+};
+exports.getInputOrThrow = getInputOrThrow;
+
+
+/***/ }),
+
 /***/ 4914:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -27545,13 +27566,15 @@ var __webpack_exports__ = {};
 var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core_1 = __nccwpck_require__(7484);
+exports.Run = Run;
+const getInputOrThrow_1 = __nccwpck_require__(8788);
 async function Run() {
-    const patToken = (0, core_1.getInput)("organization-token");
-    const apiBaseUrl = (0, core_1.getInput)("api-url");
-    console.log(`hello world avec comme arg cette api url -> ${apiBaseUrl}`);
+    const githubPatToken = (0, getInputOrThrow_1.getInputOrThrow)("organization-token");
+    const apiToken = (0, getInputOrThrow_1.getInputOrThrow)("api-token");
+    const apiBaseUrl = (0, getInputOrThrow_1.getInputOrThrow)("api-url");
 }
-(async () => await Run())();
+if (!process.env.JEST_WORKER_ID)
+    (async () => await Run())();
 
 })();
 

@@ -10,6 +10,10 @@ inputs:
     description: 'URL of the API endpoint that will receive state tracking data'
     required: true
     default: ''
+  api-token:
+    description: 'Token api'
+    required: true
+    default: ''
 runs:
   using: 'node20'
   main: 'dist/index.js'
