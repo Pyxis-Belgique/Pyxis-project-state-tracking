@@ -1,0 +1,15 @@
+name: 'Pyxis - Project State Tracker'
+description: 'A project for tracking the state and progression of issues across their lifecycle'
+author: 'Chris@Pyxis'
+inputs:
+  organization-token:
+    description: 'Token granting access to the organization where the project resides'
+    required: true
+    default: ''
+  api-url:
+    description: 'URL of the API endpoint that will receive state tracking data'
+    required: true
+    default: ''
+runs:
+  using: 'node20'
+  main: 'index.js'
