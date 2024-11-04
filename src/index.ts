@@ -1,5 +1,4 @@
-import { getInput, setFailed } from "@actions/core";
-import { context, getOctokit } from "@actions/github";
+import {getInput} from "@actions/core";
 
 async function Run() {
     const patToken = getInput("organization-token");
