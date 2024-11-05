@@ -32022,6 +32022,9 @@ async function Run() {
                 case "name":
                     console.log(`${elt.name} | ${elt.field.name}`);
                     break;
+                default:
+                    console.log("Unknown field type");
+                    break;
             }
         });
         console.log("---------------");

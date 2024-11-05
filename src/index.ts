@@ -26,6 +26,9 @@ export async function Run() {
                 case "name":
                     console.log(`${(elt as { name: string }).name} | ${elt.field.name}`);
                     break
+                default:
+                    console.log("Unknown field type");
+                    break;
             }
         });
 
