@@ -1,6 +1,8 @@
 import {getInputOrThrow} from "./helpers/getInputOrThrow";
-import {context, getOctokit} from "@actions/github";
+import {getOctokit} from "@actions/github";
 import {setFailed} from "@actions/core";
+import {projectItemQuery} from "./graphql-schemas/queries/projectItemQuery";
+import {projectItemResponse} from "./graphql-schemas/responses/projectItemResponse";
 
 
 export async function Run() {
@@ -9,141 +11,14 @@ export async function Run() {
     const apiBaseUrl = getInputOrThrow("api-url");
 
     const octokit = getOctokit(githubPatToken)
-    const query = `
-        query($projectItemId: ID!) {
-            node(id: $projectItemId) {
-                ... on ProjectV2Item {
-                    id
-                    content {
-                        __typename
-                        ... on Issue {
-                            id
-                            number
-                            title
-                            body
-                            url
-                            state
-                            createdAt
-                            updatedAt
-                            closedAt
-                            author {
-                                login
-                            }
-                            assignees(first: 10) {
-                                nodes {
-                                    login
-                                }
-                            }
-                            labels(first: 10) {
-                                nodes {
-                                    name
-                                }
-                            }
-                            milestone {
-                                title
-                                dueOn
-                            }
-                            comments(first: 10) {
-                                nodes {
-                                    body
-                                    author {
-                                        login
-                                    }
-                                    createdAt
-                                }
-                            }
-                        }
-                        ... on PullRequest {
-                            id
-                            number
-                            title
-                            body
-                            url
-                            state
-                            createdAt
-                            updatedAt
-                            closedAt
-                            mergedAt
-                            author {
-                                login
-                            }
-                            assignees(first: 10) {
-                                nodes {
-                                    login
-                                }
-                            }
-                            labels(first: 10) {
-                                nodes {
-                                    name
-                                }
-                            }
-                            milestone {
-                                title
-                                dueOn
-                            }
-                            comments(first: 10) {
-                                nodes {
-                                    body
-                                    author {
-                                        login
-                                    }
-                                    createdAt
-                                }
-                            }
-                        }
-                        ... on DraftIssue {
-                            title
-                            body
-                        }
-                    }
-                    fieldValues(first: 20) {
-                        nodes {
-                            ... on ProjectV2ItemFieldTextValue {
-                                text
-                                field {
-                                    ... on ProjectV2FieldCommon {
-                                        name
-                                    }
-                                }
-                            }
-                            ... on ProjectV2ItemFieldDateValue {
-                                date
-                                field {
-                                    ... on ProjectV2FieldCommon {
-                                        name
-                                    }
-                                }
-                            }
-                            ... on ProjectV2ItemFieldSingleSelectValue {
-                                name
-                                field {
-                                    ... on ProjectV2FieldCommon {
-                                        name
-                                    }
-                                }
-                            }
-                            ... on ProjectV2ItemFieldNumberValue {
-                                number
-                                field {
-                                    ... on ProjectV2FieldCommon {
-                                        name
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    `;
 
     try {
-        const result = await octokit.graphql(query, {
+        const result = await octokit.graphql<projectItemResponse>(projectItemQuery, {
             projectItemId: "PVTI_lADOCyNzbs4ArXwDzgUZUCk"
         });
 
         console.log("[SUCCESS]: GraphQL Data:", result);
-
+        console.log(result.node.fieldValues.nodes);
     } catch (error) {
         console.error("GraphQL request failed", error);
 
