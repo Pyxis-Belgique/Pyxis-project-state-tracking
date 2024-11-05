@@ -17,11 +17,13 @@ export async function Run() {
             projectItemId: "PVTI_lADOCyNzbs4ArXwDzgUZUCk"
         });
 
-        console.log("[SUCCESS]: GraphQL Data:", result);
-        console.log(result.node.fieldValues.nodes);
-    } catch (error) {
-        console.error("GraphQL request failed", error);
+        console.log(result);
 
+        result.node.fieldValues.nodes.forEach(elt => {
+            if ("text" in elt)
+                console.log(`${elt.text} | ${elt.field.name}`);
+        });
+    } catch (error) {
         setFailed("GraphQL request failed")
     }
 }

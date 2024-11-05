@@ -31990,11 +31990,13 @@ async function Run() {
         const result = await octokit.graphql(projectItemQuery_1.projectItemQuery, {
             projectItemId: "PVTI_lADOCyNzbs4ArXwDzgUZUCk"
         });
-        console.log("[SUCCESS]: GraphQL Data:", result);
-        console.log(result.node.fieldValues.nodes);
+        console.log(result);
+        result.node.fieldValues.nodes.forEach(elt => {
+            if ("text" in elt)
+                console.log(`${elt.text} | ${elt.field.name}`);
+        });
     }
     catch (error) {
-        console.error("GraphQL request failed", error);
         (0, core_1.setFailed)("GraphQL request failed");
     }
 }
