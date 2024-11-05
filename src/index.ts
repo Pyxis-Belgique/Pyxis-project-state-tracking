@@ -3,7 +3,6 @@ import {getOctokit} from "@actions/github";
 import {setFailed} from "@actions/core";
 import {projectItemQuery} from "./graphql-schemas/queries/projectItemQuery";
 import {projectItemResponse} from "./graphql-schemas/responses/projectItemResponse";
-import {getFieldType} from "./helpers/getFieldType";
 
 
 export async function Run() {
@@ -18,23 +17,22 @@ export async function Run() {
             projectItemId: "PVTI_lADOCyNzbs4ArXwDzgUZUCk"
         });
 
-        result.node.fieldValues.nodes.forEach(elt => {
-            switch (getFieldType(elt)) {
-                case "text":
-                    console.log(`${(elt as { text: string }).text} | ${elt.field.name}`);
-                    break;
-                case "name":
-                    console.log(`${(elt as { name: string }).name} | ${elt.field.name}`);
-                    break
-                default:
-                    console.log("Unknown field type");
-                    break;
-            }
-        });
-
-        console.log("---------------")
         console.log(result);
-        console.log("---------------")
+
+        result.node.fieldValues.nodes.forEach(elt => {
+
+            if ("text" in elt)
+                console.log(`${elt.text} | ${elt.field.name}`);
+            else if ("name" in elt)
+                console.log(`${elt.name} | ${elt.field.name}`);
+            else if ("date" in elt)
+                console.log(`${elt.date} | ${elt.field.name}`);
+            else if ("number" in elt)
+                console.log(`${elt.number} | ${elt.field.name}`);
+            else
+                console.log(`unknown`);
+
+        });
     } catch (error) {
         setFailed("GraphQL request failed")
     }
