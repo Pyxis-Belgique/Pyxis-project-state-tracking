@@ -139,6 +139,29 @@ exports.projectItemQuery = `
 
 /***/ }),
 
+/***/ 9351:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getFieldType = void 0;
+const getFieldType = (elt) => {
+    if ("text" in elt)
+        return "text";
+    if ("date" in elt)
+        return "date";
+    if ("name" in elt)
+        return "singleSelect";
+    if ("number" in elt)
+        return "number";
+    return "unknown";
+};
+exports.getFieldType = getFieldType;
+
+
+/***/ }),
+
 /***/ 8788:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -31981,6 +32004,7 @@ const getInputOrThrow_1 = __nccwpck_require__(8788);
 const github_1 = __nccwpck_require__(3228);
 const core_1 = __nccwpck_require__(7484);
 const projectItemQuery_1 = __nccwpck_require__(9907);
+const getFieldType_1 = __nccwpck_require__(9351);
 async function Run() {
     const githubPatToken = (0, getInputOrThrow_1.getInputOrThrow)("organization-token");
     const apiToken = (0, getInputOrThrow_1.getInputOrThrow)("api-token");
@@ -31992,8 +32016,14 @@ async function Run() {
         });
         console.log(result);
         result.node.fieldValues.nodes.forEach(elt => {
-            if ("text" in elt)
-                console.log(`${elt.text} | ${elt.field.name}`);
+            switch ((0, getFieldType_1.getFieldType)(elt)) {
+                case "text":
+                    console.log(`${elt.text} | ${elt.field.name}`);
+                    break;
+                case "name":
+                    console.log(`${elt.name} | ${elt.field.name}`);
+                    break;
+            }
         });
     }
     catch (error) {

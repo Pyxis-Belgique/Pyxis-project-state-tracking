@@ -3,6 +3,7 @@ import {getOctokit} from "@actions/github";
 import {setFailed} from "@actions/core";
 import {projectItemQuery} from "./graphql-schemas/queries/projectItemQuery";
 import {projectItemResponse} from "./graphql-schemas/responses/projectItemResponse";
+import {getFieldType} from "./helpers/getFieldType";
 
 
 export async function Run() {
@@ -20,8 +21,14 @@ export async function Run() {
         console.log(result);
 
         result.node.fieldValues.nodes.forEach(elt => {
-            if ("text" in elt)
-                console.log(`${elt.text} | ${elt.field.name}`);
+            switch (getFieldType(elt)) {
+                case "text":
+                    console.log(`${(elt as { text: string }).text} | ${elt.field.name}`);
+                    break;
+                case "name":
+                    console.log(`${(elt as { name: string }).name} | ${elt.field.name}`);
+                    break
+            }
         });
     } catch (error) {
         setFailed("GraphQL request failed")
