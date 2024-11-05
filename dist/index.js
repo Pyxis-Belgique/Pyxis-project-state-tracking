@@ -1,6 +1,144 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 9907:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.projectItemQuery = void 0;
+exports.projectItemQuery = `
+        query($projectItemId: ID!) {
+            node(id: $projectItemId) {
+                ... on ProjectV2Item {
+                    id
+                    content {
+                        __typename
+                        ... on Issue {
+                            id
+                            number
+                            title
+                            body
+                            url
+                            state
+                            createdAt
+                            updatedAt
+                            closedAt
+                            author {
+                                login
+                            }
+                            assignees(first: 10) {
+                                nodes {
+                                    login
+                                }
+                            }
+                            labels(first: 10) {
+                                nodes {
+                                    name
+                                }
+                            }
+                            milestone {
+                                title
+                                dueOn
+                            }
+                            comments(first: 10) {
+                                nodes {
+                                    body
+                                    author {
+                                        login
+                                    }
+                                    createdAt
+                                }
+                            }
+                        }
+                        ... on PullRequest {
+                            id
+                            number
+                            title
+                            body
+                            url
+                            state
+                            createdAt
+                            updatedAt
+                            closedAt
+                            mergedAt
+                            author {
+                                login
+                            }
+                            assignees(first: 10) {
+                                nodes {
+                                    login
+                                }
+                            }
+                            labels(first: 10) {
+                                nodes {
+                                    name
+                                }
+                            }
+                            milestone {
+                                title
+                                dueOn
+                            }
+                            comments(first: 10) {
+                                nodes {
+                                    body
+                                    author {
+                                        login
+                                    }
+                                    createdAt
+                                }
+                            }
+                        }
+                        ... on DraftIssue {
+                            title
+                            body
+                        }
+                    }
+                    fieldValues(first: 20) {
+                        nodes {
+                            ... on ProjectV2ItemFieldTextValue {
+                                text
+                                field {
+                                    ... on ProjectV2FieldCommon {
+                                        name
+                                    }
+                                }
+                            }
+                            ... on ProjectV2ItemFieldDateValue {
+                                date
+                                field {
+                                    ... on ProjectV2FieldCommon {
+                                        name
+                                    }
+                                }
+                            }
+                            ... on ProjectV2ItemFieldSingleSelectValue {
+                                name
+                                field {
+                                    ... on ProjectV2FieldCommon {
+                                        name
+                                    }
+                                }
+                            }
+                            ... on ProjectV2ItemFieldNumberValue {
+                                number
+                                field {
+                                    ... on ProjectV2FieldCommon {
+                                        name
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    `;
+
+
+/***/ }),
+
 /***/ 8788:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -31842,143 +31980,18 @@ exports.Run = Run;
 const getInputOrThrow_1 = __nccwpck_require__(8788);
 const github_1 = __nccwpck_require__(3228);
 const core_1 = __nccwpck_require__(7484);
+const projectItemQuery_1 = __nccwpck_require__(9907);
 async function Run() {
     const githubPatToken = (0, getInputOrThrow_1.getInputOrThrow)("organization-token");
     const apiToken = (0, getInputOrThrow_1.getInputOrThrow)("api-token");
     const apiBaseUrl = (0, getInputOrThrow_1.getInputOrThrow)("api-url");
     const octokit = (0, github_1.getOctokit)(githubPatToken);
-    const query = `
-        query($projectItemId: ID!) {
-            node(id: $projectItemId) {
-                ... on ProjectV2Item {
-                    id
-                    content {
-                        __typename
-                        ... on Issue {
-                            id
-                            number
-                            title
-                            body
-                            url
-                            state
-                            createdAt
-                            updatedAt
-                            closedAt
-                            author {
-                                login
-                            }
-                            assignees(first: 10) {
-                                nodes {
-                                    login
-                                }
-                            }
-                            labels(first: 10) {
-                                nodes {
-                                    name
-                                }
-                            }
-                            milestone {
-                                title
-                                dueOn
-                            }
-                            comments(first: 10) {
-                                nodes {
-                                    body
-                                    author {
-                                        login
-                                    }
-                                    createdAt
-                                }
-                            }
-                        }
-                        ... on PullRequest {
-                            id
-                            number
-                            title
-                            body
-                            url
-                            state
-                            createdAt
-                            updatedAt
-                            closedAt
-                            mergedAt
-                            author {
-                                login
-                            }
-                            assignees(first: 10) {
-                                nodes {
-                                    login
-                                }
-                            }
-                            labels(first: 10) {
-                                nodes {
-                                    name
-                                }
-                            }
-                            milestone {
-                                title
-                                dueOn
-                            }
-                            comments(first: 10) {
-                                nodes {
-                                    body
-                                    author {
-                                        login
-                                    }
-                                    createdAt
-                                }
-                            }
-                        }
-                        ... on DraftIssue {
-                            title
-                            body
-                        }
-                    }
-                    fieldValues(first: 20) {
-                        nodes {
-                            ... on ProjectV2ItemFieldTextValue {
-                                text
-                                field {
-                                    ... on ProjectV2FieldCommon {
-                                        name
-                                    }
-                                }
-                            }
-                            ... on ProjectV2ItemFieldDateValue {
-                                date
-                                field {
-                                    ... on ProjectV2FieldCommon {
-                                        name
-                                    }
-                                }
-                            }
-                            ... on ProjectV2ItemFieldSingleSelectValue {
-                                name
-                                field {
-                                    ... on ProjectV2FieldCommon {
-                                        name
-                                    }
-                                }
-                            }
-                            ... on ProjectV2ItemFieldNumberValue {
-                                number
-                                field {
-                                    ... on ProjectV2FieldCommon {
-                                        name
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    `;
     try {
-        const result = await octokit.graphql(query, {
+        const result = await octokit.graphql(projectItemQuery_1.projectItemQuery, {
             projectItemId: "PVTI_lADOCyNzbs4ArXwDzgUZUCk"
         });
         console.log("[SUCCESS]: GraphQL Data:", result);
+        console.log(result.node.fieldValues.nodes);
     }
     catch (error) {
         console.error("GraphQL request failed", error);
