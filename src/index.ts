@@ -18,8 +18,6 @@ export async function Run() {
             projectItemId: "PVTI_lADOCyNzbs4ArXwDzgUZUCk"
         });
 
-        console.log(result);
-
         result.node.fieldValues.nodes.forEach(elt => {
             switch (getFieldType(elt)) {
                 case "text":
@@ -30,6 +28,10 @@ export async function Run() {
                     break
             }
         });
+
+        console.log("---------------")
+        console.log(result);
+        console.log("---------------")
     } catch (error) {
         setFailed("GraphQL request failed")
     }

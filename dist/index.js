@@ -32014,7 +32014,6 @@ async function Run() {
         const result = await octokit.graphql(projectItemQuery_1.projectItemQuery, {
             projectItemId: "PVTI_lADOCyNzbs4ArXwDzgUZUCk"
         });
-        console.log(result);
         result.node.fieldValues.nodes.forEach(elt => {
             switch ((0, getFieldType_1.getFieldType)(elt)) {
                 case "text":
@@ -32025,6 +32024,9 @@ async function Run() {
                     break;
             }
         });
+        console.log("---------------");
+        console.log(result);
+        console.log("---------------");
     }
     catch (error) {
         (0, core_1.setFailed)("GraphQL request failed");
